@@ -65,18 +65,9 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		ansBytes, _ := json.Marshal(ans)
 		w.Write(ansBytes)
-
-	})
-	http.HandleFunc("/me", func(w http.ResponseWriter, r *http.Request) {
-		url := fmt.Sprintf("https://oauth.vk.com/authorize?response_type=code&client_id=%s&redirect_uri=%s&state=%s", config.VkClientID, config.RedirectURI, "12345")
-		http.Redirect(w, r, url, http.StatusSeeOther)
-	})
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(r.URL.Query().Get("code")))
 	})
 
 	fmt.Println(config)
 	fmt.Println("Server start")
-	http.ListenAndServe(":"+config.Port, nil)
+	log.Fatal(http.ListenAndServe(":"+config.Port, nil))
 }
